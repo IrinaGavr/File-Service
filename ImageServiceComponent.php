@@ -1,6 +1,6 @@
 <?php
 
-namespace dinogavrik\FileService;
+namespace dinogavrik\file_service;
 
 use yii\base\Component;
 
