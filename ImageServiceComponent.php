@@ -14,31 +14,37 @@ class ImageServiceComponent extends Component {
 
     public function sendFile($model_id, $model_name, $file_path, $desc = '') {
         $file = file_get_contents($file_path);
-        $data = [
-            'file' => [
-                'ext' => pathinfo($file_path, PATHINFO_EXTENSION),
-                'data' => base64_encode($file)
-            ],
-            'Upload' => [
-                'model_id' => $model_id,
-                'model_name' => $model_name,
-                'desc' => $desc
-            ]
-        ];
-        $obj_to_send = [
-            'ajaxUpload' => json_encode($data)
-        ];
+        if (getcwd() . $file ) {
+            $data = [
+                'file' => [
+                    'ext' => pathinfo($file_path, PATHINFO_EXTENSION),
+                    'data' => base64_encode($file)
+                ],
+                'Upload' => [
+                    'model_id' => $model_id,
+                    'model_name' => $model_name,
+                    'desc' => $desc
+                ]
+            ];
+            $obj_to_send = [
+                'ajaxUpload' => json_encode($data)
+            ];
+            
+            //var_dump($data);
 
-        $url = $this->url . self::UPLOAD;
-        
-        $curl = curl_init(); //инициализация сеанса
-        curl_setopt($curl, CURLOPT_URL, $url); //урл сайта к которому обращаемся
-        curl_setopt($curl, CURLOPT_HEADER, 1); //выводим заголовки
-        curl_setopt($curl, CURLOPT_POST, 1); //передача данных методом POST
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1); //теперь curl вернет нам ответ, а не выведет
-        curl_setopt($curl, CURLOPT_POSTFIELDS, $obj_to_send);
-        $res = curl_exec($curl);
-        return $res;
+            $url = $this->url . self::UPLOAD;
+
+            $curl = curl_init(); //инициализация сеанса
+            curl_setopt($curl, CURLOPT_URL, $url); //урл сайта к которому обращаемся
+            curl_setopt($curl, CURLOPT_HEADER, 1); //выводим заголовки
+            curl_setopt($curl, CURLOPT_POST, 1); //передача данных методом POST
+            curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1); //теперь curl вернет нам ответ, а не выведет
+            curl_setopt($curl, CURLOPT_POSTFIELDS, $obj_to_send);
+//            var_dump($obj_to_send);
+            $res = curl_exec($curl);
+            //var_dump($file);
+            return $res;
+        }
     }
 
     public function getFileId($file_id) {
