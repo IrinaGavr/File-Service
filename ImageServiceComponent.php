@@ -61,16 +61,15 @@ class ImageServiceComponent extends Component {
     }
 
     public function getModelVallue($model_id, $model_name) {
-
         $url = $this->url . self::DOWNLOAD_MODEL . "/{$model_id}" . "/{$model_name}";
 
-
-        $resalt = file_get_contents($url);
-
-        if (strlen($resalt) == 0) {
-            return FALSE;
+        $resalt = json_decode(file_get_contents($url));
+        if($resalt->status){
+            return $resalt->result;
         }
-        return $resalt;
+        return false;
     }
+    
 
 }
+    
